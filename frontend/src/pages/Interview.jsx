@@ -332,8 +332,15 @@ export default function Interview() {
 }
 
 const s = {
-  wrap: { minHeight:'100vh', background:'#0a0a0f', padding:'0 0 60px' },
-
+  wrap: {
+  minHeight: '100vh',
+  background: '#0a0a0f',
+  paddingBottom: '60px',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  width: '100%',
+},
   // Setup
   setupCard: { maxWidth:700, margin:'0 auto', padding:'40px 24px' },
   back: { background:'transparent', border:'none', color:'#555', fontSize:14, cursor:'pointer', marginBottom:24, padding:0 },
@@ -419,3 +426,4 @@ const s = {
   restartBtn: { flex:1, background:'#111118', border:'1px solid #6366f1', borderRadius:12, padding:14, fontSize:15, fontWeight:600, color:'#6366f1', cursor:'pointer' },
   dashBtn: { flex:1, background:'linear-gradient(135deg,#6366f1,#8b5cf6)', border:'none', borderRadius:12, padding:14, fontSize:15, fontWeight:600, color:'#fff', cursor:'pointer' },
 };
+
