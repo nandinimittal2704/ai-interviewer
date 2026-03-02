@@ -85,7 +85,7 @@ const s = {
   boxShadow: '0 20px 60px rgba(0,0,0,0.6)',
 },
   logo: { fontSize:48, textAlign:'center' },
-  title: { fontSize:36, fontWeight:850, color:'#fff', textAlign:'center' },
+  title: { fontSize:36, fontWeight:850, color:'#f00909', textAlign:'center' },
   sub: { fontSize:14, color:'#555', textAlign:'center', marginBottom:6 },
   error: { background:'#3f0f0f', border:'1px solid #ef4444', color:'#ef4444', padding:'10px 14px', borderRadius:8, fontSize:13 },
   input: { background:'#0d0d15', border:'1px solid #1e1e2e', borderRadius:10, padding:'12px 16px', fontSize:15, color:'#e2e8f0', outline:'none', width:'100%' },
