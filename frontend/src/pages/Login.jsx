@@ -9,18 +9,37 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const nav = useNavigate();
 
-  const submit = async () => {
-    setLoading(true); setError('');
-    try {
-      const res = await axios.post(`${API_URL}/api/auth/login`, form);
-      localStorage.setItem('token', res.data.token);
-      localStorage.setItem('user', JSON.stringify(res.data.user));
-      nav('/dashboard');
-    } catch (err) {
-      setError(err.response?.data?.message || 'Login failed');
-    }
-    setLoading(false);
-  };
+const submit = async () => {
+  setError('');
+
+  const email = form.email.trim();
+  const password = form.password;
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.com$/;
+
+  if (!emailRegex.test(email)) {
+    setError('Please enter a valid email ending with .com');
+    return;
+  }
+
+  if (password.length < 8) {
+    setError('Password must be at least 8 characters long');
+    return;
+  }
+
+  setLoading(true);
+
+  try {
+    const res = await axios.post(`${API_URL}/api/auth/login`, form);
+    localStorage.setItem('token', res.data.token);
+    localStorage.setItem('user', JSON.stringify(res.data.user));
+    nav('/dashboard');
+  } catch (err) {
+    setError(err.response?.data?.message || 'Login failed');
+  }
+
+  setLoading(false);
+};
 
   return (
     <div style={s.wrap}>
@@ -43,14 +62,34 @@ export default function Login() {
 }
 
 const s = {
-  wrap: { minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center', background:'#0a0a0f' },
-  card: { width:'100%', maxWidth:400, background:'#1c1c23', border:'1px solid #f0f0f4', borderRadius:20, padding:40, display:'flex', flexDirection:'column', gap:14 },
+ wrap: {
+  minHeight: '100vh',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: '40px 20px', 
+  boxSizing: 'border-box',
+},
+  card: {
+  width: '100%',
+  maxWidth: 420,
+  padding: 40,
+  boxSizing: 'border-box',  // VERY IMPORTANT
+  background: 'rgba(255,255,255,0.05)',
+  backdropFilter: 'blur(20px)',
+  border: '1px solid rgba(255,255,255,0.1)',
+  borderRadius: 24,
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 18,
+  boxShadow: '0 20px 60px rgba(0,0,0,0.6)',
+},
   logo: { fontSize:48, textAlign:'center' },
   title: { fontSize:36, fontWeight:850, color:'#fff', textAlign:'center' },
   sub: { fontSize:14, color:'#555', textAlign:'center', marginBottom:6 },
   error: { background:'#3f0f0f', border:'1px solid #ef4444', color:'#ef4444', padding:'10px 14px', borderRadius:8, fontSize:13 },
   input: { background:'#0d0d15', border:'1px solid #1e1e2e', borderRadius:10, padding:'12px 16px', fontSize:15, color:'#e2e8f0', outline:'none', width:'100%' },
   btn: { background:'linear-gradient(135deg,#6366f1,#8b5cf6)', border:'none', borderRadius:10, padding:14, fontSize:15, fontWeight:600, color:'#fff', cursor:'pointer' },
-  foot: { fontSize:36, color:'#ebe9e9', textAlign:'center' },
+  foot: { fontSize:15, color:'#555', textAlign:'center' },
   link: { color:'#6366f1', textDecoration:'none' },
 };
