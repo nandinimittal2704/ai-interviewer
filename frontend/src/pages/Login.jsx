@@ -62,34 +62,14 @@ const submit = async () => {
 }
 
 const s = {
- wrap: {
-  minHeight: '100vh',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  padding: '40px 20px', 
-  boxSizing: 'border-box',
-},
-  card: {
-  width: '100%',
-  maxWidth: 420,
-  padding: 40,
-  boxSizing: 'border-box',  // VERY IMPORTANT
-  background: 'rgba(255,255,255,0.05)',
-  backdropFilter: 'blur(20px)',
-  border: '1px solid rgba(255,255,255,0.1)',
-  borderRadius: 24,
-  display: 'flex',
-  flexDirection: 'column',
-  gap: 18,
-  boxShadow: '0 20px 60px rgba(0,0,0,0.6)',
-},
+  wrap: { minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center', background:'#0a0a0f' },
+  card: { width:'100%', maxWidth:400, background:'#111118', border:'1px solid #1e1e2e', borderRadius:20, padding:40, display:'flex', flexDirection:'column', gap:14 },
   logo: { fontSize:48, textAlign:'center' },
-  title: { fontSize:36, fontWeight:850, color:'#f00909', textAlign:'center' },
+  title: { fontSize:26, fontWeight:800, color:'#fff', textAlign:'center' },
   sub: { fontSize:14, color:'#555', textAlign:'center', marginBottom:6 },
   error: { background:'#3f0f0f', border:'1px solid #ef4444', color:'#ef4444', padding:'10px 14px', borderRadius:8, fontSize:13 },
   input: { background:'#0d0d15', border:'1px solid #1e1e2e', borderRadius:10, padding:'12px 16px', fontSize:15, color:'#e2e8f0', outline:'none', width:'100%' },
   btn: { background:'linear-gradient(135deg,#6366f1,#8b5cf6)', border:'none', borderRadius:10, padding:14, fontSize:15, fontWeight:600, color:'#fff', cursor:'pointer' },
-  foot: { fontSize:15, color:'#555', textAlign:'center' },
+  foot: { fontSize:13, color:'#555', textAlign:'center' },
   link: { color:'#6366f1', textDecoration:'none' },
 };
