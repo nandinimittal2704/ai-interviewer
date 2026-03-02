@@ -26,7 +26,7 @@ export default function Dashboard() {
       <div style={s.header}>
         <h1 style={s.logo}>🤖 AI Interviewer</h1>
         <div style={s.headerRight}>
-          <span style={s.welcome}>Hi, {user.name}!</span>
+          <span style={s.welcome}> {user.name}!</span>
           <button style={s.newBtn} onClick={() => nav('/interview')}>+ New Interview</button>
           <button style={s.logoutBtn} onClick={logout}>Logout</button>
         </div>
@@ -76,9 +76,9 @@ const s = {
   header: { display:'flex', alignItems:'center', justifyContent:'space-between', padding:'20px 40px', background:'#111118', borderBottom:'1px solid #1e1e2e' },
   logo: { fontSize:22, fontWeight:800, color:'#fff' },
   headerRight: { display:'flex', alignItems:'center', gap:12 },
-  welcome: { fontSize:14, color:'#555' },
+  welcome: { fontSize:14, color:'#faf5f5' },
   newBtn: { background:'linear-gradient(135deg,#6366f1,#8b5cf6)', border:'none', borderRadius:10, padding:'10px 20px', color:'#fff', fontSize:14, fontWeight:600, cursor:'pointer' },
-  logoutBtn: { background:'transparent', border:'1px solid #1e1e2e', borderRadius:10, padding:'10px 20px', color:'#555', fontSize:14, cursor:'pointer' },
+  logoutBtn: { background:'transparent', border:'1px solid #1e1e2e', borderRadius:10, padding:'10px 20px', color:'#363434', fontSize:14, cursor:'pointer', color:'#fff' },
   body: { maxWidth:900, margin:'0 auto', padding:'40px 24px' },
   statsRow: { display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:16, marginBottom:40 },
   stat: { background:'#111118', border:'1px solid #1e1e2e', borderRadius:16, padding:24, display:'flex', flexDirection:'column', gap:6 },
