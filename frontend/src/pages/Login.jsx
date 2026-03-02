@@ -43,94 +43,14 @@ export default function Login() {
 }
 
 const s = {
-  wrap: {
-    minHeight: '100vh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    background: 'radial-gradient(circle at top left, #1e1b4b, #0f172a 60%)',
-    padding: 20,
-  },
-
-  card: {
-    width: '100%',
-    maxWidth: 420,
-    background: 'rgba(255,255,255,0.05)',
-    backdropFilter: 'blur(20px)',
-    border: '1px solid rgba(255,255,255,0.1)',
-    borderRadius: 24,
-    padding: 45,
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 18,
-    boxShadow: '0 20px 60px rgba(0,0,0,0.6)',
-  },
-
-  logo: {
-    fontSize: 54,
-    textAlign: 'center',
-    marginBottom: 5,
-  },
-
-  title: {
-    fontSize: 32,
-    fontWeight: 800,
-    color: '#fff',
-    textAlign: 'center',
-    letterSpacing: 1,
-  },
-
-  sub: {
-    fontSize: 15,
-    color: '#94a3b8',
-    textAlign: 'center',
-    marginBottom: 15,
-  },
-
-  error: {
-    background: 'rgba(239,68,68,0.1)',
-    border: '1px solid #ef4444',
-    color: '#f87171',
-    padding: '10px 14px',
-    borderRadius: 10,
-    fontSize: 13,
-  },
-
-  input: {
-    background: 'rgba(255,255,255,0.05)',
-    border: '1px solid rgba(255,255,255,0.1)',
-    borderRadius: 12,
-    padding: '14px 18px',
-    fontSize: 15,
-    color: '#e2e8f0',
-    outline: 'none',
-    width: '100%',
-    transition: 'all 0.2s ease',
-  },
-
-  btn: {
-    background: 'linear-gradient(135deg,#6366f1,#8b5cf6)',
-    border: 'none',
-    borderRadius: 12,
-    padding: 15,
-    fontSize: 16,
-    fontWeight: 600,
-    color: '#fff',
-    cursor: 'pointer',
-    marginTop: 10,
-    transition: 'all 0.3s ease',
-  },
-
-  foot: {
-    fontSize: 14,
-    color: '#94a3b8',
-    textAlign: 'center',
-    marginTop: 10,
-  },
-
-  link: {
-    color: '#a5b4fc',
-    textDecoration: 'none',
-    fontWeight: 600,
-  },
+  wrap: { minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center', background:'#0a0a0f' },
+  card: { width:'100%', maxWidth:400, background:'#1c1c23', border:'1px solid #f0f0f4', borderRadius:20, padding:40, display:'flex', flexDirection:'column', gap:14 },
+  logo: { fontSize:48, textAlign:'center' },
+  title: { fontSize:36, fontWeight:850, color:'#fff', textAlign:'center' },
+  sub: { fontSize:14, color:'#555', textAlign:'center', marginBottom:6 },
+  error: { background:'#3f0f0f', border:'1px solid #ef4444', color:'#ef4444', padding:'10px 14px', borderRadius:8, fontSize:13 },
+  input: { background:'#0d0d15', border:'1px solid #1e1e2e', borderRadius:10, padding:'12px 16px', fontSize:15, color:'#e2e8f0', outline:'none', width:'100%' },
+  btn: { background:'linear-gradient(135deg,#6366f1,#8b5cf6)', border:'none', borderRadius:10, padding:14, fontSize:15, fontWeight:600, color:'#fff', cursor:'pointer' },
+  foot: { fontSize:36, color:'#ebe9e9', textAlign:'center' },
+  link: { color:'#6366f1', textDecoration:'none' },
 };
