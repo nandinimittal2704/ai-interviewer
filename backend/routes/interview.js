@@ -1,108 +1,233 @@
-import express from 'express';
-import { getModel } from '../config/gemini.js';
-import { authenticateToken } from '../middleware/auth.js';
+import express from "express";
+import { getModel } from "../config/gemini.js";
+import { authenticateToken } from "../middleware/auth.js";
 
 const router = express.Router();
 
-// Robust JSON extractor — handles markdown, extra text, newlines
+
+/* =============================
+   SAFE JSON PARSER
+============================= */
+
 const extractJSON = (text) => {
-  // Remove markdown code blocks
-  let cleaned = text.replace(/```json/gi, '').replace(/```/g, '').trim();
-  // Find the first { and last } to extract JSON
-  const start = cleaned.indexOf('{');
-  const end = cleaned.lastIndexOf('}');
-  if (start === -1 || end === -1) throw new Error('No JSON found in response');
-  cleaned = cleaned.slice(start, end + 1);
-  return JSON.parse(cleaned);
+  try {
+
+    let cleaned = text
+      .replace(/```json/gi, "")
+      .replace(/```/g, "")
+      .trim();
+
+    const start = cleaned.indexOf("{");
+    const end = cleaned.lastIndexOf("}");
+
+    if (start === -1 || end === -1) {
+      throw new Error("No JSON found in Gemini response");
+    }
+
+    cleaned = cleaned.slice(start, end + 1);
+
+    return JSON.parse(cleaned);
+
+  } catch (err) {
+
+    console.error("JSON PARSE ERROR:", err.message);
+    throw err;
+
+  }
 };
 
-// Get first question
-router.post('/start', authenticateToken, async (req, res) => {
+
+
+/* =============================
+   START INTERVIEW
+============================= */
+
+router.post("/start", authenticateToken, async (req, res) => {
+
   try {
+
     const { role, difficulty } = req.body;
-    const prompt = `You are an expert interviewer for ${role} roles.
-Ask the FIRST interview question for a ${difficulty} level candidate.
-- Ask ONE question only
-- No numbering, no prefix, just the question
-- Frontend: React/JS/CSS concepts
-- Backend: Node.js/APIs/Databases
-- DSA: Data structures or algorithms problem
-- System Design: Architecture question
-- HR: Behavioral question`;
+
+    const prompt = `
+You are a professional interviewer.
+
+Ask ONE ${difficulty} level interview question for a ${role} role.
+
+Rules:
+- Ask only ONE question
+- No numbering
+- No explanation
+- Return only the question text
+`;
 
     const model = getModel();
+
     const result = await model.generateContent(prompt);
-    const question = result.response.text().trim();
-    console.log('START - Question generated:', question.slice(0, 60));
+    const response = await result.response;
+
+    if (!response) {
+      throw new Error("Gemini returned empty response");
+    }
+
+    const question = response.text().trim();
+
+    console.log("START QUESTION:", question);
+
     res.json({ question });
+
   } catch (err) {
-    console.error('START ERROR:', err.message);
+
+    console.error("START ERROR:", err.stack || err.message);
+
     res.status(500).json({ message: err.message });
+
   }
+
 });
 
-// Evaluate answer + get next question
-router.post('/answer', authenticateToken, async (req, res) => {
+
+
+/* =============================
+   ANSWER EVALUATION
+============================= */
+
+router.post("/answer", authenticateToken, async (req, res) => {
+
   try {
-    const { role, difficulty, question, answer, questionNumber, totalQuestions } = req.body;
+
+    const {
+      role,
+      difficulty,
+      question,
+      answer,
+      answerTranscript, // NEW for voice support
+      questionNumber,
+      totalQuestions
+    } = req.body;
+
+    const userAnswer = answerTranscript || answer;
+
     const isLast = questionNumber >= totalQuestions;
 
-    const prompt = `You are an expert ${role} interviewer.
+    const prompt = `
+You are an expert ${role} interviewer.
 
-Question: "${question}"
-Candidate Answer: "${answer}"
+Question:
+"${question}"
 
-You MUST respond with ONLY a valid JSON object. No markdown, no backticks, no explanation before or after.
+Candidate Answer:
+"${userAnswer}"
+
+Evaluate the answer.
+
+Return ONLY valid JSON:
+
 {
-  "score": <integer 0-10>,
-  "feedback": "<2-3 sentence evaluation>",
-  "correctAnswer": "<what ideal answer should include>",
-  "followUp": "<one follow-up question>",
-  "nextQuestion": ${isLast ? 'null' : `"<new ${difficulty} level ${role} interview question>"`}
-}`;
+ "score": <integer 0-10>,
+ "feedback": "<2-3 sentence evaluation>",
+ "correctAnswer": "<ideal answer summary>",
+ "followUp": "<one follow-up question>",
+ "nextQuestion": ${isLast ? "null" : `"<new ${difficulty} ${role} interview question>"`}
+}
+`;
 
     const model = getModel();
+
     const result = await model.generateContent(prompt);
-    const raw = result.response.text();
-    console.log('ANSWER - Raw response:', raw.slice(0, 100));
+    const response = await result.response;
+
+    if (!response) {
+      throw new Error("Gemini returned empty response");
+    }
+
+    const raw = response.text();
+
+    console.log("ANSWER RAW:", raw.slice(0, 120));
+
     const data = extractJSON(raw);
+
     res.json(data);
+
   } catch (err) {
-    console.error('ANSWER ERROR:', err.message);
+
+    console.error("ANSWER ERROR:", err.stack || err.message);
+
     res.status(500).json({ message: err.message });
+
   }
+
 });
 
-// Generate final report
-router.post('/report', authenticateToken, async (req, res) => {
+
+
+/* =============================
+   FINAL REPORT
+============================= */
+
+router.post("/report", authenticateToken, async (req, res) => {
+
   try {
+
     const { role, difficulty, history } = req.body;
-    const avg = (history.reduce((s, h) => s + h.score, 0) / history.length).toFixed(1);
 
-    const prompt = `Candidate finished a ${role} interview at ${difficulty} level.
+    const avgScore =
+      history.reduce((sum, h) => sum + h.score, 0) / history.length;
+
+    const avg = avgScore.toFixed(1);
+
+    const summary = history
+      .map(
+        (h, i) =>
+          `Q${i + 1}: ${h.question}
+Answer: ${h.answer}
+Score: ${h.score}/10`
+      )
+      .join("\n\n");
+
+    const prompt = `
+Candidate completed a ${difficulty} ${role} interview.
+
 Results:
-${history.map((h, i) => `Q${i+1}: ${h.question}\nAnswer: ${h.answer}\nScore: ${h.score}/10`).join('\n\n')}
 
-You MUST respond with ONLY a valid JSON object. No markdown, no backticks, no explanation.
+${summary}
+
+Return ONLY JSON:
+
 {
-  "overallScore": ${avg},
-  "grade": "<A if >=9, B if >=7, C if >=5, D if >=3, F otherwise>",
-  "strengths": ["<strength 1>", "<strength 2>", "<strength 3>"],
-  "improvements": ["<improvement 1>", "<improvement 2>", "<improvement 3>"],
-  "recommendation": "<2-3 sentence overall assessment>",
-  "studyTopics": ["<topic 1>", "<topic 2>", "<topic 3>", "<topic 4>"]
-}`;
+ "overallScore": ${avg},
+ "grade": "<A if >=9, B if >=7, C if >=5, D if >=3, F otherwise>",
+ "strengths": ["<strength1>", "<strength2>", "<strength3>"],
+ "improvements": ["<improvement1>", "<improvement2>", "<improvement3>"],
+ "recommendation": "<2 sentence feedback>",
+ "studyTopics": ["<topic1>", "<topic2>", "<topic3>", "<topic4>"]
+}
+`;
 
     const model = getModel();
+
     const result = await model.generateContent(prompt);
-    const raw = result.response.text();
-    console.log('REPORT - Raw response:', raw.slice(0, 100));
+    const response = await result.response;
+
+    if (!response) {
+      throw new Error("Gemini returned empty response");
+    }
+
+    const raw = response.text();
+
+    console.log("REPORT RAW:", raw.slice(0, 120));
+
     const data = extractJSON(raw);
+
     res.json(data);
+
   } catch (err) {
-    console.error('REPORT ERROR:', err.message);
+
+    console.error("REPORT ERROR:", err.stack || err.message);
+
     res.status(500).json({ message: err.message });
+
   }
+
 });
 
 export default router;

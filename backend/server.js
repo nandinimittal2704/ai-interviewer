@@ -12,7 +12,7 @@ const app = express();
 app.use(cors({ origin: '*' }));
 app.use(express.json());
 
-mongoose.connect('mongodb+srv://nandinimittal2704:nandini123@cluster0.0kzx6ey.mongodb.net/ai-interviewer?retryWrites=true&w=majority&appName=Cluster0')
+mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('✅ MongoDB connected'))
   .catch(err => console.error('❌ MongoDB error:', err.message));
 
