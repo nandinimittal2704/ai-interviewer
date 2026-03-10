@@ -40,18 +40,9 @@ const styles = `
     padding: 40px 24px;
   }
 
-  /* ---- SETUP SCREEN ---- */
-  .iv-setup {
-    max-width: 860px;
-    margin: 0 auto;
-  }
+  .iv-setup { max-width: 860px; margin: 0 auto; }
 
-  .iv-setup-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 8px;
-  }
+  .iv-setup-header { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
 
   .iv-setup-header h2 {
     font-family: 'Syne', sans-serif;
@@ -63,11 +54,7 @@ const styles = `
     -webkit-text-fill-color: transparent;
   }
 
-  .iv-setup-sub {
-    color: #6b7280;
-    font-size: 14px;
-    margin: 0 0 36px 0;
-  }
+  .iv-setup-sub { color: #6b7280; font-size: 14px; margin: 0 0 36px 0; }
 
   .iv-section-label {
     font-family: 'Syne', sans-serif;
@@ -100,11 +87,7 @@ const styles = `
     text-align: left;
   }
 
-  .iv-role-card:hover {
-    border-color: #6366f1;
-    background: #141729;
-    transform: translateY(-2px);
-  }
+  .iv-role-card:hover { border-color: #6366f1; background: #141729; transform: translateY(-2px); }
 
   .iv-role-card.active {
     border-color: #6366f1;
@@ -112,42 +95,13 @@ const styles = `
     box-shadow: 0 0 0 1px #6366f1, 0 8px 32px rgba(99, 102, 241, 0.15);
   }
 
-  .iv-role-icon {
-    font-size: 26px;
-    margin-bottom: 10px;
-    display: block;
-  }
+  .iv-role-icon { font-size: 26px; margin-bottom: 10px; display: block; }
+  .iv-role-label { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; color: #e8eaf0; margin-bottom: 3px; }
+  .iv-role-desc { font-size: 12px; color: #6b7280; }
 
-  .iv-role-label {
-    font-family: 'Syne', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    color: #e8eaf0;
-    margin-bottom: 3px;
-  }
-
-  .iv-role-desc {
-    font-size: 12px;
-    color: #6b7280;
-  }
-
-  .iv-row {
-    display: flex;
-    gap: 24px;
-    margin-bottom: 32px;
-    flex-wrap: wrap;
-  }
-
-  .iv-row-group {
-    flex: 1;
-    min-width: 180px;
-  }
-
-  .iv-pills {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
+  .iv-row { display: flex; gap: 24px; margin-bottom: 32px; flex-wrap: wrap; }
+  .iv-row-group { flex: 1; min-width: 180px; }
+  .iv-pills { display: flex; gap: 8px; flex-wrap: wrap; }
 
   .iv-pill {
     background: #111424;
@@ -161,17 +115,8 @@ const styles = `
     font-family: 'DM Sans', sans-serif;
   }
 
-  .iv-pill:hover {
-    border-color: #6366f1;
-    color: #e8eaf0;
-  }
-
-  .iv-pill.active {
-    background: #6366f1;
-    border-color: #6366f1;
-    color: #fff;
-    font-weight: 500;
-  }
+  .iv-pill:hover { border-color: #6366f1; color: #e8eaf0; }
+  .iv-pill.active { background: #6366f1; border-color: #6366f1; color: #fff; font-weight: 500; }
 
   .iv-start-btn {
     width: 100%;
@@ -188,36 +133,13 @@ const styles = `
     letter-spacing: 0.03em;
   }
 
-  .iv-start-btn:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 32px rgba(99, 102, 241, 0.35);
-  }
+  .iv-start-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(99, 102, 241, 0.35); }
+  .iv-start-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-  .iv-start-btn:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-  }
+  .iv-interview { max-width: 760px; margin: 0 auto; }
 
-  /* ---- INTERVIEW SCREEN ---- */
-  .iv-interview {
-    max-width: 760px;
-    margin: 0 auto;
-  }
-
-  .iv-topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 28px;
-    flex-wrap: gap;
-    gap: 12px;
-  }
-
-  .iv-topbar-left {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
+  .iv-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; gap: 12px; }
+  .iv-topbar-left { display: flex; align-items: center; gap: 10px; }
 
   .iv-badge {
     background: #1a1d35;
@@ -241,24 +163,9 @@ const styles = `
     letter-spacing: 0.08em;
   }
 
-  .iv-progress-wrap {
-    margin-bottom: 28px;
-  }
-
-  .iv-progress-info {
-    display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-    color: #6b7280;
-    margin-bottom: 8px;
-  }
-
-  .iv-progress-bar-bg {
-    height: 4px;
-    background: #1e2136;
-    border-radius: 999px;
-    overflow: hidden;
-  }
+  .iv-progress-wrap { margin-bottom: 28px; }
+  .iv-progress-info { display: flex; justify-content: space-between; font-size: 12px; color: #6b7280; margin-bottom: 8px; }
+  .iv-progress-bar-bg { height: 4px; background: #1e2136; border-radius: 999px; overflow: hidden; }
 
   .iv-progress-bar-fill {
     height: 100%;
@@ -273,23 +180,10 @@ const styles = `
     border-radius: 18px;
     padding: 28px;
     margin-bottom: 20px;
-    position: relative;
   }
 
-  .iv-question-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
-  }
-
-  .iv-question-num {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: #6366f1;
-  }
+  .iv-question-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .iv-question-num { font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #6366f1; }
 
   .iv-speak-btn {
     background: #1a1d35;
@@ -305,27 +199,11 @@ const styles = `
     gap: 5px;
   }
 
-  .iv-speak-btn:hover {
-    background: #22264a;
-    border-color: #6366f1;
-  }
+  .iv-speak-btn:hover { background: #22264a; border-color: #6366f1; }
+  .iv-speak-btn.active { background: #6366f1; color: #fff; border-color: #6366f1; }
 
-  .iv-speak-btn.active {
-    background: #6366f1;
-    color: #fff;
-    border-color: #6366f1;
-  }
-
-  .iv-question-text {
-    font-size: 16px;
-    line-height: 1.7;
-    color: #d1d5db;
-    margin: 0;
-  }
-
-  .iv-answer-wrap {
-    margin-bottom: 16px;
-  }
+  .iv-question-text { font-size: 16px; line-height: 1.7; color: #d1d5db; margin: 0; }
+  .iv-answer-wrap { margin-bottom: 16px; }
 
   .iv-answer-textarea {
     width: 100%;
@@ -344,18 +222,9 @@ const styles = `
     box-sizing: border-box;
   }
 
-  .iv-answer-textarea:focus {
-    border-color: #6366f1;
-  }
-
-  .iv-answer-textarea::placeholder {
-    color: #3d4258;
-  }
-
-  .iv-actions {
-    display: flex;
-    gap: 10px;
-  }
+  .iv-answer-textarea:focus { border-color: #6366f1; }
+  .iv-answer-textarea::placeholder { color: #3d4258; }
+  .iv-actions { display: flex; gap: 10px; }
 
   .iv-mic-btn {
     background: #111424;
@@ -372,10 +241,7 @@ const styles = `
     font-family: 'DM Sans', sans-serif;
   }
 
-  .iv-mic-btn:hover {
-    border-color: #6366f1;
-    color: #e8eaf0;
-  }
+  .iv-mic-btn:hover { border-color: #6366f1; color: #e8eaf0; }
 
   .iv-mic-btn.listening {
     background: rgba(99, 102, 241, 0.12);
@@ -403,17 +269,9 @@ const styles = `
     transition: all 0.2s;
   }
 
-  .iv-submit-btn:hover:not(:disabled) {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 24px rgba(99, 102, 241, 0.35);
-  }
+  .iv-submit-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(99, 102, 241, 0.35); }
+  .iv-submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-  .iv-submit-btn:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-  }
-
-  /* ---- FEEDBACK ---- */
   .iv-feedback-card {
     background: #111424;
     border: 1.5px solid #1e2136;
@@ -422,12 +280,7 @@ const styles = `
     margin-top: 20px;
   }
 
-  .iv-feedback-score {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 18px;
-  }
+  .iv-feedback-score { display: flex; align-items: center; gap: 16px; margin-bottom: 18px; }
 
   .iv-score-circle {
     width: 64px;
@@ -441,41 +294,12 @@ const styles = `
     flex-shrink: 0;
   }
 
-  .iv-score-num {
-    font-family: 'Syne', sans-serif;
-    font-size: 22px;
-    font-weight: 800;
-    color: #8b8ff8;
-  }
+  .iv-score-num { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: #8b8ff8; }
+  .iv-score-label { font-size: 11px; color: #6b7280; }
+  .iv-feedback-title { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; color: #e8eaf0; margin-bottom: 4px; }
+  .iv-feedback-text { font-size: 13px; color: #9ca3af; line-height: 1.6; margin: 0 0 16px 0; }
 
-  .iv-score-label {
-    font-size: 11px;
-    color: #6b7280;
-  }
-
-  .iv-feedback-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 15px;
-    font-weight: 700;
-    color: #e8eaf0;
-    margin-bottom: 4px;
-  }
-
-  .iv-feedback-text {
-    font-size: 13px;
-    color: #9ca3af;
-    line-height: 1.6;
-    margin: 0 0 16px 0;
-  }
-
-  .iv-correct-label {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: #22c55e;
-    margin-bottom: 6px;
-  }
+  .iv-correct-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #22c55e; margin-bottom: 6px; }
 
   .iv-correct-text {
     font-size: 13px;
@@ -502,20 +326,9 @@ const styles = `
     transition: all 0.2s;
   }
 
-  .iv-next-btn:hover {
-    box-shadow: 0 6px 24px rgba(99, 102, 241, 0.35);
-    transform: translateY(-1px);
-  }
+  .iv-next-btn:hover { box-shadow: 0 6px 24px rgba(99, 102, 241, 0.35); transform: translateY(-1px); }
 
-  .iv-loading-overlay {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    color: #6b7280;
-    font-size: 14px;
-    padding: 16px;
-  }
+  .iv-loading-overlay { display: flex; align-items: center; justify-content: center; gap: 10px; color: #6b7280; font-size: 14px; padding: 16px; }
 
   .iv-spinner {
     width: 18px;
@@ -526,92 +339,23 @@ const styles = `
     animation: spin 0.7s linear infinite;
   }
 
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
+  @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* ---- RESULTS SCREEN ---- */
-  .iv-results {
-    max-width: 600px;
-    margin: 0 auto;
-    text-align: center;
-  }
+  .iv-results { max-width: 600px; margin: 0 auto; text-align: center; }
+  .iv-results-icon { font-size: 56px; margin-bottom: 16px; }
+  .iv-results-title { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; color: #e8eaf0; margin: 0 0 8px 0; }
+  .iv-results-sub { font-size: 14px; color: #6b7280; margin: 0 0 36px 0; }
 
-  .iv-results-icon {
-    font-size: 56px;
-    margin-bottom: 16px;
-  }
+  .iv-results-card { background: #111424; border: 1.5px solid #1e2136; border-radius: 22px; padding: 36px; margin-bottom: 24px; }
 
-  .iv-results-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 26px;
-    font-weight: 800;
-    color: #e8eaf0;
-    margin: 0 0 8px 0;
-  }
+  .iv-grade-display { font-family: 'Syne', sans-serif; font-size: 80px; font-weight: 800; line-height: 1; margin-bottom: 8px; }
+  .iv-results-score { font-size: 18px; color: #9ca3af; margin-bottom: 4px; }
+  .iv-results-score span { color: #e8eaf0; font-weight: 600; }
+  .iv-results-stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 24px; }
 
-  .iv-results-sub {
-    font-size: 14px;
-    color: #6b7280;
-    margin: 0 0 36px 0;
-  }
-
-  .iv-results-card {
-    background: #111424;
-    border: 1.5px solid #1e2136;
-    border-radius: 22px;
-    padding: 36px;
-    margin-bottom: 24px;
-  }
-
-  .iv-grade-display {
-    font-family: 'Syne', sans-serif;
-    font-size: 80px;
-    font-weight: 800;
-    line-height: 1;
-    margin-bottom: 8px;
-  }
-
-  .iv-results-score {
-    font-size: 18px;
-    color: #9ca3af;
-    margin-bottom: 4px;
-  }
-
-  .iv-results-score span {
-    color: #e8eaf0;
-    font-weight: 600;
-  }
-
-  .iv-results-stats {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    margin-top: 24px;
-  }
-
-  .iv-stat-box {
-    background: #0e1020;
-    border: 1px solid #1e2136;
-    border-radius: 12px;
-    padding: 16px;
-    text-align: center;
-  }
-
-  .iv-stat-val {
-    font-family: 'Syne', sans-serif;
-    font-size: 22px;
-    font-weight: 700;
-    color: #8b8ff8;
-    margin-bottom: 4px;
-  }
-
-  .iv-stat-lbl {
-    font-size: 11px;
-    color: #6b7280;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
+  .iv-stat-box { background: #0e1020; border: 1px solid #1e2136; border-radius: 12px; padding: 16px; text-align: center; }
+  .iv-stat-val { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700; color: #8b8ff8; margin-bottom: 4px; }
+  .iv-stat-lbl { font-size: 11px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.08em; }
 
   .iv-back-btn {
     width: 100%;
@@ -627,41 +371,13 @@ const styles = `
     transition: all 0.2s;
   }
 
-  .iv-back-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 32px rgba(99, 102, 241, 0.35);
-  }
+  .iv-back-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(99, 102, 241, 0.35); }
 
-  .iv-history-list {
-    margin-top: 24px;
-    text-align: left;
-  }
+  .iv-history-list { margin-top: 24px; text-align: left; }
 
-  .iv-history-item {
-    background: #0e1020;
-    border: 1px solid #1e2136;
-    border-radius: 12px;
-    padding: 14px 16px;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-
-  .iv-history-q {
-    flex: 1;
-    font-size: 13px;
-    color: #9ca3af;
-    line-height: 1.4;
-  }
-
-  .iv-history-score {
-    font-family: 'Syne', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    color: #8b8ff8;
-    white-space: nowrap;
-  }
+  .iv-history-item { background: #0e1020; border: 1px solid #1e2136; border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 14px; }
+  .iv-history-q { flex: 1; font-size: 13px; color: #9ca3af; line-height: 1.4; }
+  .iv-history-score { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; color: #8b8ff8; white-space: nowrap; }
 `;
 
 export default function Interview() {
@@ -709,6 +425,16 @@ export default function Interview() {
     window.speechSynthesis.speak(utterance);
   };
 
+  /* ---------------- ✅ FIXED: toggleSpeak (was missing in old file) ---------------- */
+  const toggleSpeak = () => {
+    if (speaking) {
+      window.speechSynthesis.cancel();
+      setSpeaking(false);
+    } else {
+      speak(question);
+    }
+  };
+
   /* ---------------- START INTERVIEW ---------------- */
   const startInterview = async () => {
     setLoading(true);
@@ -746,7 +472,13 @@ export default function Interview() {
       );
       const newHistory = [
         ...history,
-        { question, answer, score: res.data.score, feedback: res.data.feedback, correctAnswer: res.data.correctAnswer },
+        {
+          question,
+          answer,
+          score: res.data.score,
+          feedback: res.data.feedback,
+          correctAnswer: res.data.correctAnswer,
+        },
       ];
       setHistory(newHistory);
       setFeedback(res.data);
@@ -783,44 +515,55 @@ export default function Interview() {
     startTimer();
   };
 
-  /* ---------------- VOICE INPUT ---------------- */
+  /* ---------------- ✅ FIXED: VOICE INPUT (no more duplicate words) ---------------- */
   const toggleVoice = () => {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+
     if (!SpeechRecognition) {
       alert("Speech recognition not supported. Use Chrome.");
       return;
     }
+
     if (listening) {
       recRef.current?.stop();
       setListening(false);
       return;
     }
+
     const recognition = new SpeechRecognition();
     recRef.current = recognition;
     recognition.lang = "en-US";
     recognition.continuous = true;
     recognition.interimResults = true;
+
+    let committed = answer;
+
     recognition.onresult = (event) => {
-      let transcript = "";
+      let interim = "";
+      let newCommitted = committed;
+
       for (let i = event.resultIndex; i < event.results.length; i++) {
-        transcript += event.results[i][0].transcript;
+        if (event.results[i].isFinal) {
+          newCommitted += " " + event.results[i][0].transcript;
+        } else {
+          interim += event.results[i][0].transcript;
+        }
       }
-      setAnswer((prev) => (prev + " " + transcript).trim());
+
+      committed = newCommitted.trim();
+      setAnswer((committed + " " + interim).trim());
     };
+
     recognition.onerror = () => setListening(false);
-    recognition.onend = () => setListening(false);
+
+    recognition.onend = () => {
+      setListening(false);
+      setAnswer(committed.trim());
+    };
+
     recognition.start();
     setListening(true);
-  };
-
-  /* ---------------- SPEAK BUTTON ---------------- */
-  const toggleSpeak = () => {
-    if (speaking) {
-      window.speechSynthesis.cancel();
-      setSpeaking(false);
-    } else {
-      speak(question);
-    }
   };
 
   /* ---------------- PROGRESS ---------------- */
@@ -841,7 +584,6 @@ export default function Interview() {
             </div>
             <p className="iv-setup-sub">Choose your role, difficulty, and question count to begin.</p>
 
-            {/* ROLES */}
             <div className="iv-section-label">Select Role</div>
             <div className="iv-roles-grid">
               {ROLES.map((r) => (
@@ -857,7 +599,6 @@ export default function Interview() {
               ))}
             </div>
 
-            {/* DIFFICULTY + QUESTIONS */}
             <div className="iv-row">
               <div className="iv-row-group">
                 <div className="iv-section-label">Difficulty</div>
@@ -907,7 +648,6 @@ export default function Interview() {
         <style>{styles}</style>
         <div className="iv-root">
           <div className="iv-interview">
-            {/* TOP BAR */}
             <div className="iv-topbar">
               <div className="iv-topbar-left">
                 <span className="iv-badge">{roleMeta?.icon} {roleMeta?.label}</span>
@@ -916,7 +656,6 @@ export default function Interview() {
               <div className="iv-timer">⏱ {fmt(timer)}</div>
             </div>
 
-            {/* PROGRESS */}
             <div className="iv-progress-wrap">
               <div className="iv-progress-info">
                 <span>Question {qNum} of {qCount}</span>
@@ -927,18 +666,19 @@ export default function Interview() {
               </div>
             </div>
 
-            {/* QUESTION CARD */}
             <div className="iv-question-card">
               <div className="iv-question-card-header">
                 <span className="iv-question-num">Question {qNum}</span>
-                <button className={`iv-speak-btn${speaking ? " active" : ""}`} onClick={toggleSpeak}>
+                <button
+                  className={`iv-speak-btn${speaking ? " active" : ""}`}
+                  onClick={toggleSpeak}
+                >
                   {speaking ? "🔊 Speaking..." : "🔈 Read Aloud"}
                 </button>
               </div>
               <p className="iv-question-text">{question}</p>
             </div>
 
-            {/* ANSWER / FEEDBACK */}
             {!feedback && (
               <>
                 <div className="iv-answer-wrap">
@@ -950,10 +690,17 @@ export default function Interview() {
                   />
                 </div>
                 <div className="iv-actions">
-                  <button className={`iv-mic-btn${listening ? " listening" : ""}`} onClick={toggleVoice}>
+                  <button
+                    className={`iv-mic-btn${listening ? " listening" : ""}`}
+                    onClick={toggleVoice}
+                  >
                     {listening ? "🔴 Listening..." : "🎙 Voice Input"}
                   </button>
-                  <button className="iv-submit-btn" onClick={submitAnswer} disabled={!answer.trim() || loading}>
+                  <button
+                    className="iv-submit-btn"
+                    onClick={submitAnswer}
+                    disabled={!answer.trim() || loading}
+                  >
                     {loading ? "Evaluating..." : "Submit Answer →"}
                   </button>
                 </div>
@@ -1012,10 +759,15 @@ export default function Interview() {
           <div className="iv-results">
             <div className="iv-results-icon">🏁</div>
             <h2 className="iv-results-title">Interview Complete!</h2>
-            <p className="iv-results-sub">Here's how you performed across all {qCount} questions.</p>
+            <p className="iv-results-sub">
+              Here's how you performed across all {qCount} questions.
+            </p>
 
             <div className="iv-results-card">
-              <div className="iv-grade-display" style={{ color: GRADE_COLOR[report?.grade] || "#6366f1" }}>
+              <div
+                className="iv-grade-display"
+                style={{ color: GRADE_COLOR[report?.grade] || "#6366f1" }}
+              >
                 {report?.grade || "—"}
               </div>
               <div className="iv-results-score">
@@ -1044,7 +796,9 @@ export default function Interview() {
 
             {history.length > 0 && (
               <div className="iv-history-list">
-                <div className="iv-section-label" style={{ marginBottom: 12 }}>Question Breakdown</div>
+                <div className="iv-section-label" style={{ marginBottom: 12 }}>
+                  Question Breakdown
+                </div>
                 {history.map((h, i) => (
                   <div key={i} className="iv-history-item">
                     <div className="iv-history-q">
@@ -1057,7 +811,11 @@ export default function Interview() {
               </div>
             )}
 
-            <button className="iv-back-btn" onClick={() => nav("/dashboard")} style={{ marginTop: 24 }}>
+            <button
+              className="iv-back-btn"
+              onClick={() => nav("/dashboard")}
+              style={{ marginTop: 24 }}
+            >
               ← Back to Dashboard
             </button>
           </div>
