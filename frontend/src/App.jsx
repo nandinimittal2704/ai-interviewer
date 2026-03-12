@@ -1,9 +1,9 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/home.jsx";
-import Login from "./pages/login.jsx";
-import Signup from "./pages/signup.jsx";
-import Dashboard from "./pages/dashboard.jsx";
-import Interview from "./pages/interview.jsx";
+import Login from "./pages/Login.jsx";
+import Signup from "./pages/Signup.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
+import Interview from "./pages/Interview.jsx";
 
 const isAuth = () => !!localStorage.getItem("token");
 

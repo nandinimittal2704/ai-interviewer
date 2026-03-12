@@ -92,7 +92,7 @@ align-items:flex-start;
 }
 
 .hero-image{
-max-width:400px;
+max-width:300px;
 height:auto;
 object-fit:contain;
 }
@@ -103,6 +103,7 @@ font-weight:700;
 margin-bottom:8px;
 background:linear-gradient(90deg,#9df7a8,#33ff66);
 -webkit-background-clip:text;
+background-clip: text;
 -webkit-text-fill-color:transparent;
 }
 
@@ -183,7 +184,7 @@ font-size:48px;
 }
 
 .hero-image{
-max-width:450px;
+max-width:300px;
 }
 
 .hero-buttons{
