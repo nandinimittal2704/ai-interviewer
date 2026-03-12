@@ -1,4 +1,5 @@
-import { useNavigate, useEffect, useState } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react"; // <-- Correct import
 import interviewImg from "../assets/interview.png"
 import cutoutImg from "../assets/cutout.png.png"
 import "../App.css";
