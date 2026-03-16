@@ -6,7 +6,6 @@ const router = express.Router();
 
 /* =============================
    GEMINI MODEL - INLINE INIT
-   (bypasses any getModel() issues)
 ============================= */
 const getModel = () => {
   if (!process.env.GEMINI_API_KEY) {
@@ -17,13 +16,13 @@ const getModel = () => {
     model: "gemini-2.5-flash",
     generationConfig: {
       temperature: 0.7,
-      maxOutputTokens: 1024,
+      maxOutputTokens: 2048,
     },
   });
 };
 
 /* =============================
-   SAFE JSON PARSER
+   SAFE JSON PARSER - FIXED
 ============================= */
 const extractJSON = (text) => {
   try {
@@ -35,11 +34,21 @@ const extractJSON = (text) => {
     const start = cleaned.indexOf("{");
     const end = cleaned.lastIndexOf("}");
 
-    if (start === -1 || end === -1) {
-      throw new Error("No JSON found in response: " + cleaned.slice(0, 100));
+    if (start === -1 || end === -1 || end <= start) {
+      console.error("❌ Raw response causing parse error:", cleaned.slice(0, 300));
+      throw new Error("No valid JSON object found in Gemini response");
     }
 
-    return JSON.parse(cleaned.slice(start, end + 1));
+    const jsonStr = cleaned.slice(start, end + 1);
+
+    const fixed = jsonStr
+      .replace(/,\s*}/g, "}")
+      .replace(/,\s*]/g, "]")
+      .replace(/\n/g, " ")
+      .replace(/[\x00-\x1F\x7F]/g, " ");
+
+    return JSON.parse(fixed);
+
   } catch (err) {
     console.error("❌ JSON PARSE ERROR:", err.message);
     throw err;
@@ -52,22 +61,19 @@ const extractJSON = (text) => {
 router.post("/start", authenticateToken, async (req, res) => {
   try {
     const { role, difficulty } = req.body;
-
     console.log("📥 START REQUEST:", { role, difficulty });
 
     if (!role || !difficulty) {
       return res.status(400).json({ message: "role and difficulty are required" });
     }
 
-    const prompt = `You are a professional interviewer. Ask ONE ${difficulty} level interview question for a ${role} developer role. Return only the question text, nothing else.`;
+    const prompt = `You are a professional interviewer. Ask ONE ${difficulty} level interview question for a ${role} developer role. Return only the question text, nothing else. No numbering, no explanation.`;
 
     const model = getModel();
     const result = await model.generateContent(prompt);
     const question = result.response.text().trim();
 
-    if (!question) {
-      throw new Error("Gemini returned empty question");
-    }
+    if (!question) throw new Error("Gemini returned empty question");
 
     console.log("✅ QUESTION GENERATED:", question.slice(0, 80));
     res.json({ question });
@@ -83,16 +89,7 @@ router.post("/start", authenticateToken, async (req, res) => {
 ============================= */
 router.post("/answer", authenticateToken, async (req, res) => {
   try {
-    const {
-      role,
-      difficulty,
-      question,
-      answer,
-      answerTranscript,
-      questionNumber,
-      totalQuestions,
-    } = req.body;
-
+    const { role, difficulty, question, answer, answerTranscript, questionNumber, totalQuestions } = req.body;
     console.log("📥 ANSWER REQUEST:", { role, difficulty, questionNumber, totalQuestions });
 
     if (!role || !difficulty || !question) {
@@ -100,20 +97,16 @@ router.post("/answer", authenticateToken, async (req, res) => {
     }
 
     const userAnswer = (answerTranscript || answer || "").trim();
-
-    if (!userAnswer) {
-      return res.status(400).json({ message: "Answer cannot be empty" });
-    }
+    if (!userAnswer) return res.status(400).json({ message: "Answer cannot be empty" });
 
     const isLast = Number(questionNumber) >= Number(totalQuestions);
 
-    const prompt = `
-You are an expert ${role} interviewer evaluating a candidate's answer.
+    const prompt = `You are an expert ${role} interviewer evaluating a candidate's answer.
 
 Question: "${question}"
 Candidate Answer: "${userAnswer}"
 
-Return ONLY a valid JSON object, no markdown, no extra text:
+IMPORTANT: Respond with ONLY a raw JSON object. No markdown, no code blocks, no explanation before or after. Start your response directly with { and end with }.
 
 {
   "score": <integer 0-10>,
@@ -121,19 +114,16 @@ Return ONLY a valid JSON object, no markdown, no extra text:
   "correctAnswer": "<concise ideal answer>",
   "followUp": "<one follow-up question>",
   "nextQuestion": ${isLast ? "null" : `"<new ${difficulty} level ${role} interview question>"`}
-}`.trim();
+}`;
 
     const model = getModel();
     const result = await model.generateContent(prompt);
     const raw = result.response.text();
-
-    console.log("✅ ANSWER RAW:", raw.slice(0, 120));
+    console.log("✅ ANSWER RAW:", raw.slice(0, 150));
 
     const data = extractJSON(raw);
 
-    if (typeof data.score !== "number") {
-      data.score = parseInt(data.score) || 5;
-    }
+    if (typeof data.score !== "number") data.score = parseInt(data.score) || 5;
     if (!data.feedback) data.feedback = "No feedback provided.";
     if (!data.correctAnswer) data.correctAnswer = "No model answer provided.";
     if (data.nextQuestion === undefined) data.nextQuestion = null;
@@ -152,36 +142,27 @@ Return ONLY a valid JSON object, no markdown, no extra text:
 router.post("/report", authenticateToken, async (req, res) => {
   try {
     const { role, difficulty, history } = req.body;
-
     console.log("📥 REPORT REQUEST:", { role, difficulty, historyLength: history?.length });
 
     if (!history || !Array.isArray(history) || history.length === 0) {
       return res.status(400).json({ message: "history array is required" });
     }
 
-    const avgScore =
-      history.reduce((sum, h) => sum + (Number(h.score) || 0), 0) / history.length;
-
+    const avgScore = history.reduce((sum, h) => sum + (Number(h.score) || 0), 0) / history.length;
     const avg = parseFloat(avgScore.toFixed(1));
-
-    const grade =
-      avg >= 9 ? "A" :
-      avg >= 7 ? "B" :
-      avg >= 5 ? "C" :
-      avg >= 3 ? "D" : "F";
+    const grade = avg >= 9 ? "A" : avg >= 7 ? "B" : avg >= 5 ? "C" : avg >= 3 ? "D" : "F";
 
     const summary = history
       .map((h, i) => `Q${i + 1}: ${h.question}\nAnswer: ${h.answer || ""}\nScore: ${h.score}/10`)
       .join("\n\n");
 
-    const prompt = `
-A candidate completed a ${difficulty} ${role} interview.
+    const prompt = `A candidate completed a ${difficulty} ${role} interview.
 
 ${summary}
 
 Average Score: ${avg}/10
 
-Return ONLY a valid JSON object, no markdown:
+IMPORTANT: Respond with ONLY a raw JSON object. No markdown, no code blocks, no explanation. Start directly with { and end with }.
 
 {
   "overallScore": ${avg},
@@ -190,16 +171,14 @@ Return ONLY a valid JSON object, no markdown:
   "improvements": ["<improvement1>", "<improvement2>", "<improvement3>"],
   "recommendation": "<2 sentence recommendation>",
   "studyTopics": ["<topic1>", "<topic2>", "<topic3>", "<topic4>"]
-}`.trim();
+}`;
 
     const model = getModel();
     const result = await model.generateContent(prompt);
     const raw = result.response.text();
-
-    console.log("✅ REPORT RAW:", raw.slice(0, 120));
+    console.log("✅ REPORT RAW:", raw.slice(0, 150));
 
     const data = extractJSON(raw);
-
     data.overallScore = avg;
     data.grade = grade;
 
