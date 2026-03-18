@@ -4,8 +4,8 @@ import axios from "axios";
 import API_URL from "../config.js";
 
 const ROLE_ICONS = {
-  frontend: "⚛️", backend: "⚙️", fullstack: "🔗",
-  dsa: "🧮", system: "🏗️", hr: "🤝",
+  frontend: "", backend: "", fullstack: "",
+  dsa: "", system: "", hr: "",
 };
 
 const GRADE_COLOR = {
@@ -548,7 +548,7 @@ export default function Dashboard() {
           <div className="db-welcome">
             <div className="db-welcome-eyebrow">✦ Dashboard</div>
             <h1 className="db-welcome-title">
-              Welcome back, {firstName} 👋
+              Welcome back, {firstName} 
             </h1>
             <p className="db-welcome-sub">
               Let's sharpen your interview skills today.
@@ -558,17 +558,17 @@ export default function Dashboard() {
           {/* STATS */}
           <div className="db-stats">
             <div className="db-stat-card">
-              <span className="db-stat-icon">📋</span>
+              <span className="db-stat-icon"></span>
               <div className="db-stat-val">{sessions.length}</div>
               <div className="db-stat-label">Interviews</div>
             </div>
             <div className="db-stat-card">
-              <span className="db-stat-icon">📈</span>
+              <span className="db-stat-icon"></span>
               <div className="db-stat-val">{avg}<span style={{ fontSize: 18, color: "var(--text-muted)" }}>/10</span></div>
               <div className="db-stat-label">Avg Score</div>
             </div>
             <div className="db-stat-card">
-              <span className="db-stat-icon">🏆</span>
+              <span className="db-stat-icon"></span>
               <div className="db-stat-val">{strongPerf}</div>
               <div className="db-stat-label">Strong Performances</div>
             </div>
@@ -589,7 +589,7 @@ export default function Dashboard() {
             </div>
           ) : sessions.length === 0 ? (
             <div className="db-empty">
-              <div className="db-empty-icon">🎯</div>
+              <div className="db-empty-icon"></div>
               <h3>No interviews yet</h3>
               <p>Start your first AI mock interview and track your progress here.</p>
               <button className="db-empty-btn" onClick={() => nav("/interview")}>
@@ -610,7 +610,7 @@ export default function Dashboard() {
                   <div key={sess._id} className="db-session-row">
                     <div className="db-session-role">
                       <div className="db-session-role-icon">
-                        {ROLE_ICONS[sess.role] || "💼"}
+                        {ROLE_ICONS[sess.role] || ""}
                       </div>
                       {sess.role}
                     </div>

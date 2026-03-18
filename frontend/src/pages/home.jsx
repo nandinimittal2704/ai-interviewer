@@ -87,11 +87,11 @@ export default function Home() {
               </button>
             </div>
             <div className="hero-stats">
-              <div className="stat"><span>10k+</span>Sessions</div>
+              <div className="stat"><span>valuable</span>Sessions</div>
               <div className="stat-divider" />
-              <div className="stat"><span>95%</span>Satisfaction</div>
+              <div className="stat"><span>Practice</span>More</div>
               <div className="stat-divider" />
-              <div className="stat"><span>70%</span>Improvement</div>
+              <div className="stat"><span>Feedback</span>answers Instantly</div>
             </div>
           </div>
 
@@ -157,12 +157,12 @@ export default function Home() {
 
         <div className="features-grid">
           {[
-            { icon: "📊", title: "Detailed Performance Insights", desc: "Track scores, strengths and weaknesses after every session with AI-generated analytics." },
-            { icon: "🤖", title: "Friendly AI Coach", desc: "Practice with an AI that gives real-time, constructive feedback just like a real interviewer." },
-            { icon: "🎯", title: "Role-Specific Questions", desc: "Get questions tailored to your target role — frontend, backend, DSA, system design, HR and more." },
-            { icon: "🎙️", title: "Voice Input Support", desc: "Speak your answers naturally using voice input — just like in a real interview setting." },
-            { icon: "📈", title: "70% Improvement Rate", desc: "Most users report significant improvement in interview confidence after consistent practice." },
-            { icon: "⚡", title: "Instant Feedback", desc: "No waiting. Get scored and evaluated the moment you submit each answer." },
+            { icon: "", title: "Detailed Performance Insights", desc: "Track scores, strengths and weaknesses after every session with AI-generated analytics." },
+            { icon: "", title: "Friendly AI Coach", desc: "Practice with an AI that gives real-time, constructive feedback just like a real interviewer." },
+            { icon: "", title: "Role-Specific Questions", desc: "Get questions tailored to your target role — frontend, backend, DSA, system design, HR and more." },
+            { icon: "", title: "Voice Input Support", desc: "Speak your answers naturally using voice input — just like in a real interview setting." },
+            { icon: "", title: "70% Improvement Rate", desc: "Most users report significant improvement in interview confidence after consistent practice." },
+            { icon: "", title: "Instant Feedback", desc: "No waiting. Get scored and evaluated the moment you submit each answer." },
           ].map((f, i) => (
             <div
               className="feature-card"
