@@ -85,6 +85,16 @@ disabled={loading}
 {loading ? "Creating..." : "Create Account"}
 </button>
 
+<div style={s.divider}>
+  <span style={s.dividerLine}></span>
+  <span style={s.dividerText}>OR</span>
+  <span style={s.dividerLine}></span>
+</div>
+
+<a href={`${API_URL}/api/auth/google`} style={s.googleBtn}>
+  Continue with Google
+</a>
+
 <p style={s.foot}>
 Already have an account? 
 <Link to="/login" style={s.link}> Sign in</Link>
@@ -173,6 +183,49 @@ fontWeight:600,
 color:"black",
 cursor:"pointer",
 transition:"0.25s"
+},
+
+googleBtn:{
+background:"#4285F4",
+border:"1px solid #2563eb",
+borderRadius:40,
+padding:14,
+fontSize:15,
+fontWeight:700,
+color:"#ffffff",
+textAlign:"center",
+textDecoration:"none",
+display:"flex",
+alignItems:"center",
+justifyContent:"center",
+width:"100%",
+gap:10,
+marginTop:8,
+transition:"background 0.2s"
+},
+
+googleBtnHover:{
+background:"#3367d6"
+},
+
+divider:{
+display:"flex",
+alignItems:"center",
+gap:12,
+marginTop:12,
+marginBottom:8
+},
+
+dividerLine:{
+flex:1,
+height:1,
+background:"rgba(255,255,255,0.12)"
+},
+
+dividerText:{
+fontSize:12,
+color:"#94a3b8",
+fontWeight:700
 },
 
 foot:{
