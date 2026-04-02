@@ -40,13 +40,14 @@ router.post('/login', async (req, res) => {
 });
 
 // Step 1 — Redirect to Google
-router.get(
-  "/google",
+router.get("/google", (req, res, next) => {
+  const callbackURL = process.env.GOOGLE_CALLBACK_URL || `${req.protocol}://${req.get("host")}/api/auth/google/callback`;
   passport.authenticate("google", {
     scope: ["profile", "email"],
     session: false,
-  })
-);
+    callbackURL,
+  })(req, res, next);
+});
 
 // Step 2 — Google redirects back here
 router.get(
