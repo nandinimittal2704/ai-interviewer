@@ -4,7 +4,7 @@ import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import Interview from "./pages/Interview.jsx";
-import AuthCallback from "./pages/AuthCallback.jsx";
+
 
 const isAuth = () => !!localStorage.getItem("token");
 
@@ -42,7 +42,6 @@ export default function App() {
         }
       />
 
-      <Route path="/auth/callback" element={<AuthCallback />} />
 
     </Routes>
   );

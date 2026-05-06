@@ -2,7 +2,6 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
-import passport from './config/passport.js';
 import authRoutes from './routes/auth.js';
 import interviewRoutes from './routes/interview.js';
 import sessionRoutes from './routes/sessions.js';
@@ -12,7 +11,6 @@ const app = express();
 
 app.use(cors({ origin: '*' }));
 app.use(express.json());
-app.use(passport.initialize());
 
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('✅ MongoDB connected'))

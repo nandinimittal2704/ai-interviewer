@@ -85,15 +85,8 @@ disabled={loading}
 {loading ? "Creating..." : "Create Account"}
 </button>
 
-<div style={s.divider}>
-  <span style={s.dividerLine}></span>
-  <span style={s.dividerText}>OR</span>
-  <span style={s.dividerLine}></span>
-</div>
 
-<a href={`${API_URL}/api/auth/google`} style={s.googleBtn}>
-  Continue with Google
-</a>
+
 
 <p style={s.foot}>
 Already have an account? 
