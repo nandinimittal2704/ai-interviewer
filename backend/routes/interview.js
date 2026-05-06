@@ -1,29 +1,37 @@
 import express from "express";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import axios from "axios";
 import { authenticateToken } from "../middleware/auth.js";
-import { getModel } from "../config/gemini.js";
 
 const router = express.Router();
 
 /* =============================
-   GEMINI MODEL - INLINE INIT
+   DIRECT GEMINI API CALL
+   No SDK — raw HTTP request
 ============================= */
-const getModel = () => {
-  if (!process.env.GEMINI_API_KEY) {
-    throw new Error("GEMINI_API_KEY is missing from environment variables");
-  }
-  const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-  return genAI.getGenerativeModel({
-    model: "gemini-2.5-flash",
+const callGemini = async (prompt) => {
+  const key = process.env.GEMINI_API_KEY;
+
+  if (!key) throw new Error("GEMINI_API_KEY not set");
+
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`;
+
+  const response = await axios.post(url, {
+    contents: [
+      {
+        parts: [{ text: prompt }],
+      },
+    ],
     generationConfig: {
       temperature: 0.7,
       maxOutputTokens: 2048,
     },
   });
+
+  return response.data.candidates[0].content.parts[0].text;
 };
 
 /* =============================
-   SAFE JSON PARSER - FIXED
+   SAFE JSON PARSER
 ============================= */
 const extractJSON = (text) => {
   try {
@@ -35,21 +43,11 @@ const extractJSON = (text) => {
     const start = cleaned.indexOf("{");
     const end = cleaned.lastIndexOf("}");
 
-    if (start === -1 || end === -1 || end <= start) {
-      console.error("❌ Raw response causing parse error:", cleaned.slice(0, 300));
-      throw new Error("No valid JSON object found in Gemini response");
+    if (start === -1 || end === -1) {
+      throw new Error("No JSON found: " + cleaned.slice(0, 100));
     }
 
-    const jsonStr = cleaned.slice(start, end + 1);
-
-    const fixed = jsonStr
-      .replace(/,\s*}/g, "}")
-      .replace(/,\s*]/g, "]")
-      .replace(/\n/g, " ")
-      .replace(/[\x00-\x1F\x7F]/g, " ");
-
-    return JSON.parse(fixed);
-
+    return JSON.parse(cleaned.slice(start, end + 1));
   } catch (err) {
     console.error("❌ JSON PARSE ERROR:", err.message);
     throw err;
@@ -70,18 +68,14 @@ router.post("/start", authenticateToken, async (req, res) => {
 
     const prompt = `You are a professional interviewer. Ask ONE ${difficulty} level interview question for a ${role} developer role. Return only the question text, nothing else. No numbering, no explanation.`;
 
-    const model = getModel();
-    const result = await model.generateContent(prompt);
-    const question = result.response.text().trim();
+    const question = await callGemini(prompt);
 
-    if (!question) throw new Error("Gemini returned empty question");
-
-    console.log("✅ QUESTION GENERATED:", question.slice(0, 80));
-    res.json({ question });
+    console.log("✅ QUESTION:", question.slice(0, 80));
+    res.json({ question: question.trim() });
 
   } catch (err) {
-    console.error("❌ START ERROR:", err.message);
-    res.status(500).json({ message: err.message });
+    console.error("❌ START ERROR:", err.response?.data || err.message);
+    res.status(500).json({ message: err.response?.data?.error?.message || err.message });
   }
 });
 
@@ -90,24 +84,35 @@ router.post("/start", authenticateToken, async (req, res) => {
 ============================= */
 router.post("/answer", authenticateToken, async (req, res) => {
   try {
-    const { role, difficulty, question, answer, answerTranscript, questionNumber, totalQuestions } = req.body;
-    console.log("📥 ANSWER REQUEST:", { role, difficulty, questionNumber, totalQuestions });
+    const {
+      role,
+      difficulty,
+      question,
+      answer,
+      answerTranscript,
+      questionNumber,
+      totalQuestions,
+    } = req.body;
+
+    console.log("📥 ANSWER REQUEST:", { role, difficulty, questionNumber });
 
     if (!role || !difficulty || !question) {
-      return res.status(400).json({ message: "role, difficulty, and question are required" });
+      return res.status(400).json({ message: "role, difficulty, question are required" });
     }
 
     const userAnswer = (answerTranscript || answer || "").trim();
-    if (!userAnswer) return res.status(400).json({ message: "Answer cannot be empty" });
+    if (!userAnswer) {
+      return res.status(400).json({ message: "Answer cannot be empty" });
+    }
 
     const isLast = Number(questionNumber) >= Number(totalQuestions);
 
-    const prompt = `You are an expert ${role} interviewer evaluating a candidate's answer.
+    const prompt = `You are an expert ${role} interviewer evaluating a candidate answer.
 
 Question: "${question}"
 Candidate Answer: "${userAnswer}"
 
-IMPORTANT: Respond with ONLY a raw JSON object. No markdown, no code blocks, no explanation before or after. Start your response directly with { and end with }.
+IMPORTANT: Respond with ONLY a raw JSON object. No markdown. No explanation. Start with { end with }.
 
 {
   "score": <integer 0-10>,
@@ -117,10 +122,8 @@ IMPORTANT: Respond with ONLY a raw JSON object. No markdown, no code blocks, no 
   "nextQuestion": ${isLast ? "null" : `"<new ${difficulty} level ${role} interview question>"`}
 }`;
 
-    const model = getModel();
-    const result = await model.generateContent(prompt);
-    const raw = result.response.text();
-    console.log("✅ ANSWER RAW:", raw.slice(0, 150));
+    const raw = await callGemini(prompt);
+    console.log("✅ ANSWER RAW:", raw.slice(0, 100));
 
     const data = extractJSON(raw);
 
@@ -132,8 +135,8 @@ IMPORTANT: Respond with ONLY a raw JSON object. No markdown, no code blocks, no 
     res.json(data);
 
   } catch (err) {
-    console.error("❌ ANSWER ERROR:", err.message);
-    res.status(500).json({ message: err.message });
+    console.error("❌ ANSWER ERROR:", err.response?.data || err.message);
+    res.status(500).json({ message: err.response?.data?.error?.message || err.message });
   }
 });
 
@@ -143,15 +146,17 @@ IMPORTANT: Respond with ONLY a raw JSON object. No markdown, no code blocks, no 
 router.post("/report", authenticateToken, async (req, res) => {
   try {
     const { role, difficulty, history } = req.body;
-    console.log("📥 REPORT REQUEST:", { role, difficulty, historyLength: history?.length });
+    console.log("📥 REPORT REQUEST:", { role, difficulty });
 
     if (!history || !Array.isArray(history) || history.length === 0) {
       return res.status(400).json({ message: "history array is required" });
     }
 
-    const avgScore = history.reduce((sum, h) => sum + (Number(h.score) || 0), 0) / history.length;
+    const avgScore =
+      history.reduce((sum, h) => sum + (Number(h.score) || 0), 0) / history.length;
     const avg = parseFloat(avgScore.toFixed(1));
-    const grade = avg >= 9 ? "A" : avg >= 7 ? "B" : avg >= 5 ? "C" : avg >= 3 ? "D" : "F";
+    const grade =
+      avg >= 9 ? "A" : avg >= 7 ? "B" : avg >= 5 ? "C" : avg >= 3 ? "D" : "F";
 
     const summary = history
       .map((h, i) => `Q${i + 1}: ${h.question}\nAnswer: ${h.answer || ""}\nScore: ${h.score}/10`)
@@ -163,7 +168,7 @@ ${summary}
 
 Average Score: ${avg}/10
 
-IMPORTANT: Respond with ONLY a raw JSON object. No markdown, no code blocks, no explanation. Start directly with { and end with }.
+IMPORTANT: Respond with ONLY a raw JSON object. No markdown. Start with { end with }.
 
 {
   "overallScore": ${avg},
@@ -174,10 +179,8 @@ IMPORTANT: Respond with ONLY a raw JSON object. No markdown, no code blocks, no 
   "studyTopics": ["<topic1>", "<topic2>", "<topic3>", "<topic4>"]
 }`;
 
-    const model = getModel();
-    const result = await model.generateContent(prompt);
-    const raw = result.response.text();
-    console.log("✅ REPORT RAW:", raw.slice(0, 150));
+    const raw = await callGemini(prompt);
+    console.log("✅ REPORT RAW:", raw.slice(0, 100));
 
     const data = extractJSON(raw);
     data.overallScore = avg;
@@ -186,8 +189,8 @@ IMPORTANT: Respond with ONLY a raw JSON object. No markdown, no code blocks, no 
     res.json(data);
 
   } catch (err) {
-    console.error("❌ REPORT ERROR:", err.message);
-    res.status(500).json({ message: err.message });
+    console.error("❌ REPORT ERROR:", err.response?.data || err.message);
+    res.status(500).json({ message: err.response?.data?.error?.message || err.message });
   }
 });
 
