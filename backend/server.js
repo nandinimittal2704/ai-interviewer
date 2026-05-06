@@ -16,6 +16,13 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log('✅ MongoDB connected'))
   .catch(err => console.error('❌ MongoDB error:', err.message));
 
+  app.get('/debug-env', (req, res) => {
+  res.json({
+    hasKey: !!process.env.GEMINI_API_KEY,
+    keyStart: process.env.GEMINI_API_KEY?.slice(0, 8) || 'MISSING'
+  });
+});
+
 app.use('/api/auth', authRoutes);
 app.use('/api/interview', interviewRoutes);
 app.use('/api/sessions', sessionRoutes);
