@@ -2,7 +2,6 @@ import express from "express";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { authenticateToken } from "../middleware/auth.js";
 
-
 const router = express.Router();
 
 /* =============================
@@ -14,7 +13,7 @@ const getModel = () => {
   }
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
   return genAI.getGenerativeModel({
-    model: "gemini-2.5-flash",
+    model: "gemini-2.0-flash",
     generationConfig: {
       temperature: 0.7,
       maxOutputTokens: 2048,
@@ -22,9 +21,6 @@ const getModel = () => {
   });
 };
 
-/* =============================
-   SAFE JSON PARSER - FIXED
-============================= */
 const extractJSON = (text) => {
   try {
     let cleaned = text
@@ -56,9 +52,6 @@ const extractJSON = (text) => {
   }
 };
 
-/* =============================
-   START INTERVIEW
-============================= */
 router.post("/start", authenticateToken, async (req, res) => {
   try {
     const { role, difficulty } = req.body;
@@ -85,9 +78,6 @@ router.post("/start", authenticateToken, async (req, res) => {
   }
 });
 
-/* =============================
-   ANSWER EVALUATION
-============================= */
 router.post("/answer", authenticateToken, async (req, res) => {
   try {
     const { role, difficulty, question, answer, answerTranscript, questionNumber, totalQuestions } = req.body;
@@ -137,9 +127,6 @@ IMPORTANT: Respond with ONLY a raw JSON object. No markdown, no code blocks, no 
   }
 });
 
-/* =============================
-   FINAL REPORT
-============================= */
 router.post("/report", authenticateToken, async (req, res) => {
   try {
     const { role, difficulty, history } = req.body;
