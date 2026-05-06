@@ -1,6 +1,7 @@
 import express from "express";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { authenticateToken } from "../middleware/auth.js";
+import { getModel } from "../config/gemini.js";
 
 const router = express.Router();
 
@@ -13,7 +14,7 @@ const getModel = () => {
   }
   const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
   return genAI.getGenerativeModel({
-    model: "gemini-1.5-flash",
+    model: "gemini-2.5-flash",
     generationConfig: {
       temperature: 0.7,
       maxOutputTokens: 2048,
