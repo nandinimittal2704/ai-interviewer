@@ -4,7 +4,6 @@ import { authenticateToken } from "../middleware/auth.js";
 
 const router = express.Router();
 
-model: "gemini-2.5-flash",
 
 /* =============================
    QUESTION BANK - FALLBACK
