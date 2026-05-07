@@ -755,6 +755,7 @@ export default function Interview() {
   const [timer, setTimer] = useState(0);
   const [listening, setListening] = useState(false);
   const [speaking, setSpeaking] = useState(false);
+  const [allQuestions, setAllQuestions] = useState([]);
 
   const timerRef = useRef(null);
   const recRef = useRef(null);
@@ -789,6 +790,7 @@ export default function Interview() {
     try {
       const res = await axios.post(`${API_URL}/api/interview/start`, { role, difficulty }, { headers: getHeaders() });
       setQuestion(res.data.question);
+      setAllQuestions(res.data.allQuestions || []);
       speak(res.data.question);
       setScreen("interview");
       startTimer();
@@ -805,7 +807,7 @@ export default function Interview() {
     try {
       const res = await axios.post(
         `${API_URL}/api/interview/answer`,
-        { role, difficulty, question, answer, questionNumber: qNum, totalQuestions: qCount },
+        { role, difficulty, question, answer, questionNumber: qNum, totalQuestions: qCount, allQuestions },
         { headers: getHeaders() }
       );
       const newHistory = [...history, { question, answer, score: res.data.score, feedback: res.data.feedback, correctAnswer: res.data.correctAnswer }];
