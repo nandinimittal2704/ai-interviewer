@@ -19,18 +19,19 @@ const submit = async () => {
 
   setError("");
 
-  const email = form.email.trim();
+  const email = form.email.trim().toLowerCase();
   const password = form.password;
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.com$/;
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
 
   if(!emailRegex.test(email)){
-    setError("Please enter a valid email ending with .com");
+    setError("Please enter a valid email address");
     return;
   }
 
-  if(password.length < 8){
-    setError("Password must be at least 8 characters long");
+  if(!passwordRegex.test(password)){
+    setError("Password must be at least 8 characters and include uppercase, lowercase, a number, and a symbol");
     return;
   }
 
@@ -38,7 +39,7 @@ const submit = async () => {
 
   try{
 
-    const res = await axios.post(`${API_URL}/api/auth/login`,form);
+    const res = await axios.post(`${API_URL}/api/auth/login`,{ ...form, email, password });
 
     localStorage.setItem("token",res.data.token);
     localStorage.setItem("user",JSON.stringify(res.data.user));

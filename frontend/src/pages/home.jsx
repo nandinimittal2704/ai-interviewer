@@ -48,7 +48,15 @@ export default function Home() {
         <div className={`nav-links ${menuOpen ? "nav-links--open" : ""}`}>
           <a onClick={() => { window.scrollTo({ top: 0, behavior: "smooth" }); setMenuOpen(false); }}>Home</a>
           <a onClick={() => { navigate("/login"); setMenuOpen(false); }}>AI Interview</a>
-          <a onClick={() => { navigate("/login"); setMenuOpen(false); }}>Communication</a>
+          <a
+            href="mailto:nandinimittal2704@gmail.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setMenuOpen(false)}
+            style={{ cursor: "pointer" }}
+          >
+            Communication
+          </a>
           <a onClick={() => { document.getElementById("faq-section")?.scrollIntoView({ behavior: "smooth" }); setMenuOpen(false); }}>FAQ</a>
         </div>
 

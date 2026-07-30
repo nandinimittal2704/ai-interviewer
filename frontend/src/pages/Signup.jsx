@@ -19,11 +19,33 @@ export default function Signup() {
   const submit = async () => {
 
     setError("");
+
+    const name = form.name.trim();
+    const email = form.email.trim().toLowerCase();
+    const password = form.password;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
+
+    if (!name) {
+      setError("Name is required");
+      return;
+    }
+
+    if (!emailRegex.test(email)) {
+      setError("Please enter a valid email address");
+      return;
+    }
+
+    if (!passwordRegex.test(password)) {
+      setError("Password must be at least 8 characters and include uppercase, lowercase, a number, and a symbol");
+      return;
+    }
+
     setLoading(true);
 
     try{
 
-      const res = await axios.post(`${API_URL}/api/auth/signup`,form);
+      const res = await axios.post(`${API_URL}/api/auth/signup`,{ ...form, name, email, password });
 
       localStorage.setItem("token",res.data.token);
       localStorage.setItem("user",JSON.stringify(res.data.user));
